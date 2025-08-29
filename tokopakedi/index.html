@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TokoPakedi</title>
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+  <style>
+    body { background: #f8f9fa; }
+    .thumb { cursor: pointer; transition: 0.2s; }
+    .thumb:hover { transform: scale(1.05); }
+    .thumb.active { border: 2px solid #198754; }
+    .product-box { 
+      background: #fff; 
+      border: 1px solid #ddd; 
+      border-radius: 10px; 
+      padding: 20px; 
+      word-break: break-word; 
+    }
+    .size-btn.active { background-color: #198754; color: #fff; }
+  </style>
+</head>
+<body>
+  
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+  <div class="container">
+    <a class="navbar-brand text-success fw-bold" href="#">
+      <img src="assets/img/logo.png" alt="Logo" width="30" height="30" class="me-2">
+      TokoPakedi
+    </a>
+    <form class="d-flex mx-auto" style="width: 50%;">
+      <input class="form-control" type="search" placeholder="Cari di TokoPakedi">
+    </form>
+    <div>
+      <button class="btn btn-outline-success me-2">Masuk</button>
+      <button class="btn btn-success">Daftar</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Produk -->
+<div class="container my-4">
+  <div class="row g-4">
+    
+    <!-- Kiri: Gambar -->
+    <div class="col-lg-4 col-md-6 col-12">
+      <div class="product-box text-center">
+        <img id="mainImage" src="assets/img/laptop1.jpg" alt="Laptop"
+             class="img-fluid border rounded w-100 mb-3"
+             data-bs-toggle="modal" data-bs-target="#imageModal">
+
+        <div class="d-flex justify-content-center flex-wrap gap-2">
+          <img src="assets/img/laptop1.jpg" class="thumb img-thumbnail active" width="80">
+          <img src="assets/img/laptop2.jpg" class="thumb img-thumbnail" width="80">
+          <img src="assets/img/laptop3.jpg" class="thumb img-thumbnail" width="80">
+        </div>
+      </div>
+    </div>
+
+    <!-- Tengah: Detail -->
+    <div class="col-lg-5 col-md-6 col-12">
+      <div class="product-box h-100">
+        <h5 class="fw-bold mb-2">
+          Asus Zenbook Pro DUO UX482 Touch i7 1165G7 14.0 FHD 8GB 512GB / 1TB SSD W10
+        </h5>
+        <p class="text-muted mb-1">Terjual 10 • ★ 5 (4 rating)</p>
+        <h3 id="price" class="text-danger mb-3">Rp 19.000.000</h3>
+
+        <h6 class="fw-bold">Pilih Ukuran:</h6>
+        <div class="mb-3">
+          <button class="btn btn-outline-success m-1 size-btn active" data-price="19000000" data-text="SSD 512 GB">SSD 512 GB</button>
+          <button class="btn btn-outline-success m-1 size-btn" data-price="24000000" data-text="SSD 1 TB">SSD 1 TB</button>
+        </div>
+
+        <p>
+          ASUS ZenBook Duo 14 UX482EA <br>
+          Intel Evo Platform <br>
+          Intel Core i7-1165G7 <br>
+          14” FHD NanoEdge Touch Display <br>
+          VGA Intel Iris Xe Graphics <br>
+          8GB LPDDR4X Onboard <br>
+          512GB / 1TB PCIe SSD <br>
+          Innovative ScreenPad Plus <br>
+          Windows 10 (upgradeable Windows 11)
+        </p>
+
+        <p>
+          <b>Kelengkapan:</b><br>
+          Unit, Charger, Dus, Tas Laptop
+        </p>
+
+        <p class="text-warning mb-1">NEW 100% Original</p>
+        <p>Garansi Distributor 1 Tahun</p>
+      </div>
+    </div>
+
+    <!-- Kanan: Checkout -->
+    <div class="col-lg-3 col-md-12 col-12">
+      <div class="product-box h-100">
+        <p class="fw-bold">Atur Jumlah</p>
+        <h1 class="fw-bold" id="selectedOption">SSD 512 GB, 8 GB</h1>
+        <div class="d-flex justify-content-center align-items-center my-2">
+          <button class="btn btn-outline-secondary btn-sm minus">-</button>
+          <input type="text" id="number" value="1" readonly 
+                 class="form-control text-center mx-1" style="width:60px;">
+          <button class="btn btn-outline-secondary btn-sm plus">+</button>
+        </div>
+        <p><b>Stok:</b> <span class="text-warning">sisa 6</span></p>
+        <p><b>Subtotal:</b> <span id="subtotal">Rp 19.000.000</span></p>
+        <hr>
+        <button class="btn btn-outline-success w-100 mb-2"><b>Beli Langsung</b></button>
+        <button class="btn btn-success w-100"><b>+ Keranjang</b></button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal Preview -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body text-center">
+        <img id="modalImage" src="assets/img/laptop1.jpg" class="img-fluid rounded">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script -->
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script>
+$(document).ready(function(){
+  let currentPrice = 19000000;
+  let maxStock = 6; // stok maksimal
+
+  function formatRupiah(angka) {
+    return "Rp " + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  }
+
+  // Thumbnail klik
+  $(".thumb").click(function(){
+    let newSrc = $(this).attr("src");
+    $("#mainImage").attr("src", newSrc);
+    $("#modalImage").attr("src", newSrc);
+    $(".thumb").removeClass("active");
+    $(this).addClass("active");
+  });
+
+  // Pilih ukuran
+  $(".size-btn").click(function(){
+    $(".size-btn").removeClass("active");
+    $(this).addClass("active");
+
+    currentPrice = parseInt($(this).data("price"));
+    $("#price").text(formatRupiah(currentPrice));
+
+    let qty = parseInt($("#number").val());
+    $("#subtotal").text(formatRupiah(currentPrice * qty));
+
+    // update nama varian di kanan
+    let selectedText = $(this).data("text");
+    $("#selectedOption").text(selectedText + ", 8 GB");
+  });
+
+  // Plus
+  $(".plus").click(function(){
+    let val = parseInt($("#number").val());
+    if(val < maxStock) {  
+      $("#number").val(val + 1);
+      $("#subtotal").text(formatRupiah(currentPrice * (val + 1)));
+    }
+  });
+
+  // Minus
+  $(".minus").click(function(){
+    let val = parseInt($("#number").val());
+    if(val > 1) {
+      $("#number").val(val - 1);
+      $("#subtotal").text(formatRupiah(currentPrice * (val - 1)));
+    }
+  });
+});
+</script>
+
+</body>
+</html>
